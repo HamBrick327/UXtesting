@@ -3,7 +3,7 @@ import tkinter as tk
 tinker = tk.Tk()
 
 ## tkinter window stuff
-tinker.geometry("500x500")
+tinker.geometry("1000x500")
 
 text = tk.Text(tinker, height=10, width=20)
 

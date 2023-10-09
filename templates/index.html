@@ -11,7 +11,7 @@
         // update the variable in real time
         function updateVar() {
             fetch('/get_variable')
-                .then(response => response.json())
+                // .then(response => response.json())
                 .then(data => {
                     //update variable on the webpage
                     document.getElementById('variable').innerText = data.variable;
@@ -21,5 +21,7 @@
 
         setInterval(updateVar, 2000);
     </script>
+    <input type="text"></input>
+    <textarea id="input"></textarea>
 </body>
 </html>

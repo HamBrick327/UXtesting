@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify
 from time import sleep
 from random import randint
 import requests
+import json
 import os
 
 print(os.getcwd())
@@ -12,9 +13,10 @@ variable_to_display = 0
 def variable():
     # return randint(1, 1000)
     try:
-        response = requests.get(f"https://api.api-ninjas.com/v1/jokes?limit={2}", headers={'X-Api-Key' : "FWIYfCodkizNPtWSfjMNYw==BpZw8KgtJ4foUCyJ"})
+        response = requests.get(f"https://api.api-ninjas.com/v1/jokes?limit={1}", headers={'X-Api-Key' : "FWIYfCodkizNPtWSfjMNYw==BpZw8KgtJ4foUCyJ"})
         if response.status_code == requests.codes.ok:
-            return response.text
+            response = json.loads(response.text)[0]['joke']
+            return response
     except:
         print("thing broke lmao")
 
