@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Flask Variable Example</title>
+</head>
+<body>
+    <h1><span id="variable"></span></h1>
+
+    <script>
+        // update the variable in real time
+        function updateVar() {
+            fetch('/get_variable')
+                .then(response => response.json())
+                .then(data => {
+                    //update variable on the webpage
+                    document.getElementById('variable').innerText = data.variable;
+                })
+                .catch(error => console.error("Error:", error));
+        }
+
+        setInterval(updateVar, 2000);
+    </script>
+</body>
+</html>
