@@ -13,10 +13,11 @@ variable_to_display = 0
 def variable():
     # return randint(1, 1000)
     try:
-        response = requests.get(f"https://api.api-ninjas.com/v1/jokes?limit={1}", headers={'X-Api-Key' : "FWIYfCodkizNPtWSfjMNYw==BpZw8KgtJ4foUCyJ"})
+        response = requests.get(f'https://api.api-ninjas.com/v1/jokes?limit={1}', headers={'X-Api-Key' : "FWIYfCodkizNPtWSfjMNYw==BpZw8KgtJ4foUCyJ"})
+
         if response.status_code == requests.codes.ok:
-            response = json.loads(response.text)[0]['joke']
-            return response
+            # response = json.loads(response.text)
+            return response.text
     except:
         print("thing broke lmao")
 
@@ -29,9 +30,8 @@ def index():
 
 @app.route('/get_variable')
 def get_variable():
-    # print(jsonify(variable=variable()))
+    # print(json.loads(variable())[0]['joke'])
     return jsonify(variable=variable())
-
 
 
 
