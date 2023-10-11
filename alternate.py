@@ -57,7 +57,8 @@ app.mainloop()
 
 while time() < BEGIN + 20:
     sleep(.01)
-    print(time() - BEGIN)
+    print(time() - BEGIN) 
+'''BUG NOT WORKING'''
 
 entry.get()
 
