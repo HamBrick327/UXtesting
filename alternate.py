@@ -20,9 +20,10 @@ frame = ctk.CTkFrame(master=app)
 frame.pack()
 entry = ''
 
-
-
-
+def keypressEvent(event):
+    userInput = entry.get()
+    resultLabel.configure(text='You entered: ' + userInput)
+    print("keypress event called")
 
 ############### STOLEN BUTTON CODE ####################################
 
@@ -51,25 +52,18 @@ BEGIN = time()
 entry = ctk.CTkEntry(master=frame, placeholder_text="test text")
 entry.pack(pady=10, padx=10)
 
+
+resultLabel = ctk.CTkLabel(master=frame, text="")
+resultLabel.pack(pady=10)
+
+entry.bind('<Return>', keypressEvent)
+
 app.mainloop()
 
 ## TODO make the app.mainloop and the below while loop run at the same time
 
-while time() < BEGIN + 20:
-    sleep(.01)
-    print(time() - BEGIN) 
-'''BUG NOT WORKING'''
+# Create a label to display the result
 
-entry.get()
-
-
-# app.mainloop()
-
-# while time() < BEGIN + 20:
-#     sleep(.01)
-#     print(time() - BEGIN)
-
-# print(entry.get())
 
 '''
 tinker = tk.Tk()
