@@ -1,5 +1,5 @@
 import tkinter as tk
-from threading import Thread
+# from threading import Thread
 import customtkinter as ctk
 from time import time, sleep
 
