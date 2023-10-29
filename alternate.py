@@ -10,7 +10,7 @@ https://youtu.be/1itG8q-sCGY?si=r4HOdwhsYHHWl1U3
 https://github.com/TomSchimansky/CustomTkinter
 '''
 
-ctk.set_appearance_mode("System")  # Modes: system (default), light, dark
+ctk.set_appearance_mode("Dark")  # Modes: system (default), light, dark
 ctk.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
 
 app = ctk.CTk()  # create CTk window like you do with the Tk window
@@ -49,10 +49,15 @@ def keypressEvent(event):
 BEGIN = time()
 
 ############## ALT TEXTBOX CODE ####################
-entry = ctk.CTkEntry(master=frame, placeholder_text="test text")
+entry = ctk.CTkEntry(master=frame, placeholder_text="press enter to enter")
 entry.pack(pady=10, padx=10)
 
+text = ctk.CTkTextbox(app)
 
+text.insert("0.0", "new text to insert") ## insert at line 0 character 0 (column 0, row 0)
+text.pack(padx=10, pady=10, anchor=ctk.W)
+
+# Create a label to display the result
 resultLabel = ctk.CTkLabel(master=frame, text="")
 resultLabel.pack(pady=10)
 
@@ -60,9 +65,6 @@ entry.bind('<Return>', keypressEvent)
 
 app.mainloop()
 
-## TODO make the app.mainloop and the below while loop run at the same time
-
-# Create a label to display the result
 
 
 '''
