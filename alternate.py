@@ -6,7 +6,10 @@ from scrubadub import clean
 import requests
 from os import getenv
 
-
+'''
+TODO add openai api support
+TODO scrubadub openai prompt
+'''
 apiKey = getenv("OPENAIKEY")
 
 
