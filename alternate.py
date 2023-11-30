@@ -2,8 +2,15 @@ import tkinter as tk
 from threading import Thread
 import customtkinter as ctk
 from time import time, sleep
+from scrubadub import clean
+import requests
+from os import getenv
 
-##### references ################
+
+apiKey = getenv("OPENAIKEY")
+
+
+##### links I need to remember ################
 '''
 https://youtu.be/JDU-ycsxvqM?si=fYYgmRc_azqzHyww
 https://youtu.be/1itG8q-sCGY?si=r4HOdwhsYHHWl1U3
@@ -11,8 +18,10 @@ https://github.com/TomSchimansky/CustomTkinter
 https://stackoverflow.com/questions/27215326/tkinter-keypress-and-keyrelease-events
 '''
 
+
+
 ctk.set_appearance_mode("Dark")  # Modes: system (default), light, dark
-ctk.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
+ctk.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
 
 app = ctk.CTk()  # create CTk window like you do with the Tk window
 app.geometry("500x500")
