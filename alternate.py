@@ -1,16 +1,17 @@
 import tkinter as tk
-from threading import Thread
+# from threading import Thread
 import customtkinter as ctk
-from time import time, sleep
+# from time import time, sleep
 from scrubadub import clean
-import requests
+# import requests
 from os import getenv
+from openai import OpenAI
 
 '''
 TODO add openai api support
 TODO scrubadub openai prompt
 '''
-apiKey = getenv("OPENAIKEY")
+apiKey = getenv("OPENAIKEY2")
 
 
 ##### links I need to remember ################
@@ -20,6 +21,21 @@ https://youtu.be/1itG8q-sCGY?si=r4HOdwhsYHHWl1U3
 https://github.com/TomSchimansky/CustomTkinter
 https://stackoverflow.com/questions/27215326/tkinter-keypress-and-keyrelease-events
 '''
+
+def openaiGenerate(prompt):
+    client = OpenAI(api_key=apiKey)
+    completion = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[
+    {"role": "system", "content": '''You are a school teacher and shall follow the following rules:
+     
+     - you will be given an article that you need to re-write on a level a sixth-grader can read and understand
+     - you will be given special escape sequences like {{EMAIL}} and {{PHONE_NUMBER}}, please leave these as they are.
+     - 
+     '''},
+    {"role": "user", "content": "Compose a poem that explains the concept of recursion in programming."}
+  ]
+)
 
 
 
@@ -34,6 +50,7 @@ frame = ctk.CTkFrame(master=app)
 frame.pack()
 entry = ''
 
+## tkinter keypress wrapper function
 def keypressEvent(event):
     userInput = entry.get()
     resultLabel.configure(text='You entered: ' + userInput)
@@ -60,7 +77,6 @@ def keypressEvent(event):
 # print("\n\n TEXT INPUTTED BY USER: ", string)
 # # text.delete("0.0", "end") ## delete all the text in the textbox
 # # text.configure(state='disabled') ## make the textbox unwritable; read-only
-BEGIN = time()
 
 ############## ALT TEXTBOX CODE ####################
 entry = ctk.CTkEntry(master=frame, placeholder_text="press enter to enter")
@@ -81,32 +97,31 @@ app.mainloop()
 
 
 
-'''
-tinker = tk.Tk()
-
-## tkinter window stuff
-tinker.geometry("1000x500")
-
-text = tk.Text(tinker, height=10, width=20)
-text2 = tk.Text(tinker, height=10, width=20)
-
-l = tk.Label(tinker, text = "input text")
-l2 = tk.Label(tinker, text = "output text")
-
-#l.config(font=("Courier", 14))
+# tinker = tk.Tk()
+# 
+# tkinter window stuff
+# tinker.geometry("1000x500")
+# 
+# text = tk.Text(tinker, height=10, width=20)
+# text2 = tk.Text(tinker, height=10, width=20)
+# 
+# l = tk.Label(tinker, text = "input text")
+# l2 = tk.Label(tinker, text = "output text")
+# 
+# l.config(font=("Courier", 14))
 
 # b1 = tk.Button(tinker, text="button1", command= print("button1 pressed"))
-b2 = tk.Button(tinker, text="exit", command= tinker.destroy)
-
-text.pack(side=tk.LEFT)
-text2.pack(side=tk.RIGHT)
-l.pack(side=tk.LEFT)
-l2.pack(side=tk.RIGHT)
-
+# b2 = tk.Button(tinker, text="exit", command= tinker.destroy)
+# 
+# text.pack(side=tk.LEFT)
+# text2.pack(side=tk.RIGHT)
+# l.pack(side=tk.LEFT)
+# l2.pack(side=tk.RIGHT)
+# 
 # b1.pack()
-b2.pack()
-
+# b2.pack()
+# 
 # text.insert(tk.END, {text})
-
-tk.mainloop()
-'''
+# 
+# tk.mainloop()
+# 
