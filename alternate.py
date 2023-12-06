@@ -15,6 +15,7 @@ apiKey = getenv("OPENAIKEY2")
 
 
 ##### links I need to remember ################
+##### links I need to remember ################
 '''
 https://youtu.be/JDU-ycsxvqM?si=fYYgmRc_azqzHyww
 https://youtu.be/1itG8q-sCGY?si=r4HOdwhsYHHWl1U3
@@ -41,9 +42,11 @@ def openaiGenerate(prompt):
 
 ctk.set_appearance_mode("Dark")  # Modes: system (default), light, dark
 ctk.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
+ctk.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
 
 app = ctk.CTk()  # create CTk window like you do with the Tk window
 app.geometry("500x500")
+# app.overrideredirect(True) ## this will remove the toolbar (x button, fullscreen button, minimize button)
 # app.overrideredirect(True) ## this will remove the toolbar (x button, fullscreen button, minimize button)
 
 frame = ctk.CTkFrame(master=app)
