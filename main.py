@@ -1,69 +1,65 @@
-from flask import Flask, render_template, jsonify
-from time import sleep
-from random import randint
-import requests
-import json
-import os
+from openai import OpenAI
+from os import getenv
+from scrubadub import clean
+import tkinter as tk
+import customtkinter as ctk
+from time import time
 
-print(os.getcwd())
+apiKey = getenv("OPENAIKEY2")
 
-app = Flask(__name__)
-variable_to_display = 0
-
-def variable():
-    # return randint(1, 1000)
-    try:
-        response = requests.get(f'https://api.api-ninjas.com/v1/jokes?limit={1}', headers={'X-Api-Key' : "FWIYfCodkizNPtWSfjMNYw==BpZw8KgtJ4foUCyJ"})
-
-        if response.status_code == requests.codes.ok:
-            # response = json.loads(response.text)
-            return response.text
-    except:
-        print("thing broke lmao")
-
-
-# Define a route for the home page
-@app.route('/')
-def index():
-    # Pass the variable to the HTML template
-    return render_template('index.html', variable=variable())
-
-@app.route('/get_variable')
-def get_variable():
-    # print(json.loads(variable())[0]['joke'])
-    return jsonify(variable=variable())
+def openaiGenerate(prompt):
+    print(time() + ": sent openai api request")
+    start = time()
+    client = OpenAI(api_key=apiKey)
+    completion = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[
+    {"role": "system", "content": '''You are a school teacher and shall follow the following rules:
+     
+     - you will be given an article that you need to re-write on a level a sixth-grader can read and understand
+     - you will be given special escape sequences like {{EMAIL}} and {{PHONE_NUMBER}}, please leave these as they are.
+     - 
+     '''},
+    {"role": "user", "content": str(prompt)}
+    ]
+    )
+    print(f"openai returned call in {time() - start} seconds")
+    return completion.choices[0].message.content
 
 
+ctk.set_appearance_mode("Dark")  # Modes: system (default), light, dark
+ctk.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
 
-if __name__ == '__main__':
-    app.run(port=8080)
+app = ctk.CTk()  # create CTk window like you do with the Tk window
+app.geometry("500x500")
+# app.overrideredirect(True) ## this will remove the toolbar (x button, fullscreen button, minimize button)
+
+frame = ctk.CTkFrame(master=app)
+frame.pack()
+entry = ''
+
+## tkinter keypress wrapper function
+def keypressEvent(event):
+    userInput = entry.get()
+    text.configure(text='You entered: ' + userInput)
+    print("keypress event called")
 
 
+############## TEXT ENTRY ####################
+entry = ctk.CTkEntry(master=frame, placeholder_text="press enter to enter")
+entry.pack(pady=10, padx=10)
 
-'''
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Flask Variable Example</title>
-</head>
-<body>
-    <h1>Variable Value: <span id="variable"></span></h1>
+text = ctk.CTkTextbox(app)
 
-    <script>
-        // update the variable in real time
-        function updateVar() {
-            fetch('/get_variable')
-                .then(response => response.json())
-                .then(data => {
-                    //update variable on the webpage
-                    document.getElementById('variable').innerText = data.variable;
-                })
-                .catch(error => console.error("Error:", error));
-        }
+text.insert("0.0", "new text to insert") ## insert at line 0 character 0 (column 0, row 0)
+text.pack(padx=10, pady=10, anchor=ctk.W)
 
-        setInterval(updateVar, 100);
-    </script>
-</body>
-</html>
-'''
+# Create a label to display the result
+resultLabel = ctk.CTkLabel(master=frame, text="")
+resultLabel.pack(pady=10)
+
+output = ctk.CTkTextbox(app, state="disabled")
+
+entry.bind('<Return>', keypressEvent)
+
+app.mainloop()
