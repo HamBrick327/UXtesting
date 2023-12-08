@@ -46,12 +46,12 @@ app.title("ChatGPT article rewriter")
 
 ## tkinter keypress wrapper function
 def keypressEvent(event):
+    print("keypress event called")
     userInput = text.get("0.0", 'end')
     userInput = clean(userInput)
     ## send gotten text to openai
     gptRewrite = openaiGenerate(clean(text=userInput))
     output.insert("0.0", gptRewrite)
-    print("keypress event called")
 
 
 ############## TEXT ENTRY ####################
