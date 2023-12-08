@@ -40,8 +40,10 @@ entry = ''
 
 ## tkinter keypress wrapper function
 def keypressEvent(event):
-    userInput = entry.get()
-    text.configure(text='You entered: ' + userInput)
+    userInput = text.get()
+    ## send gotten text to openai
+    openaiGenerate(clean(text=userInput))
+    resultLabel.insert("0.0", "")
     print("keypress event called")
 
 
@@ -51,7 +53,7 @@ entry.pack(pady=10, padx=10)
 
 text = ctk.CTkTextbox(app)
 
-text.insert("0.0", "new text to insert") ## insert at line 0 character 0 (column 0, row 0)
+text.insert("0.0", "press enter to enter") ## insert at line 0 character 0 (column 0, row 0)
 text.pack(padx=10, pady=10, anchor=ctk.W)
 
 # Create a label to display the result
