@@ -7,18 +7,24 @@ from time import time, strftime
 
 apiKey = getenv("OPENAIKEY2")
 log = open("log.txt", 'a')
+grade = ''
 
+## stolen from docs
+def optionmenu_callback(choice):
+    global grade
+    print("dropdown clicked:", choice)
+    grade = choice
 
-def openaiGenerate(prompt):
-    print("sent openai api request")
+def openaiGenerate(prompt, gradelevel):
+    print(f"sent openai api request with grade {grade}")
     start = time()
     client = OpenAI(api_key=apiKey)
     completion = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=[
-    {"role": "system", "content": '''You are a school teacher and shall follow the following rules:
+    {f"role": "system", "content": '''You are a school teacher and shall follow the following rules:
      
-     - you will be given an article that you need to re-write on a level a sixth-grader can read and understand
+     - you will be given an article that you need to re-write on a level someone in grade {gradelevel} would be able to read and understand
      - you will be given special escape sequences like {{EMAIL}} and {{PHONE}}, please leave these as they are.
      - please ensure to keep the same message and information as the article, but rewritten to be understood by a sixth-grader
      '''},
@@ -32,38 +38,39 @@ def openaiGenerate(prompt):
     return completion.choices[0].message.content
 
 
-ctk.set_appearance_mode("Dark")  # Modes: system (default), light, dark
-ctk.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
+ctk.set_appearance_mode("system")  # Modes: system (default), light, dark
+ctk.set_default_color_theme("dark-blue")  # Themes: blue (default), dark-blue, green
 
 app = ctk.CTk()  # create CTk window like you do with the Tk window
 app.geometry("1000x500")
-app.title("ChatGPT article rewriter")
-# app.overrideredirect(True) ## this will remove the toolbar (x button, fullscreen button, minimize button)
+app.title("ChatGPT rewriter")
 
-# frame = ctk.CTkFrame(master=app)
-# frame.pack()
-# entry = ''
 
 ## tkinter keypress wrapper function
 def keypressEvent(event):
+    global grade
     print("keypress event called")
     userInput = text.get("0.0", 'end')
     userInput = clean(userInput)
+    
     ## send gotten text to openai
-    gptRewrite = openaiGenerate(clean(text=userInput))
+    gptRewrite = openaiGenerate(clean(text=userInput), gradelevel=grade)
+
+    ## shove in the chatGPT rewritten stuff
+    output.delete("0.0", 'end')
     output.insert("0.0", gptRewrite)
 
+optionmenu = ctk.CTkOptionMenu(app, values=["Kindergarten", '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'], anchor="w", command=optionmenu_callback)
+optionmenu.set("select grade level")
+optionmenu.pack(padx=10, pady=10, side="top", anchor=tk.N)
 
 ############## TEXT ENTRY ####################
-# entry = ctk.CTkEntry(master=frame, placeholder_text="press enter to enter")
-# entry.pack(pady=10, padx=10)
-
 text = ctk.CTkTextbox(app, width=400, height=300)
 
-text.insert("0.0", "input") ## insert at line 0 character 0 (column 0, row 0)
+text.insert("0.0", "press enter to submit") ## insert at line 0 character 0 (column 0, row 0)
 text.pack(padx=10, pady=10, side="left", anchor=tk.N)
 
-# Create a label to display the result
+## output label to display data gotten back from openai
 output = ctk.CTkTextbox(app, width=400, height=300)
 
 output.insert("0.0", text="output")
