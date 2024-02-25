@@ -50,9 +50,11 @@ app.title("ChatGPT rewriter")
 def keypressEvent(event):
     global grade
     print("keypress event called")
+    output.delete("0.0", "end")
+    output.insert("0.0", "thinking...")
     userInput = text.get("0.0", 'end')
     userInput = clean(userInput)
-    
+
     ## send gotten text to openai
     gptRewrite = openaiGenerate(clean(text=userInput), gradelevel=grade)
 
